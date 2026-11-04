@@ -1,5 +1,5 @@
 import numpy as np
-import tempfile, subprocess
+import tempfile, subprocess, shutil
 from pathlib import Path
 import pandas as pd
 import h5py
@@ -195,7 +195,13 @@ def run_ptarmigan(ptarmigan_path: Path, working_directory: Path) -> None:
         )
     if result.returncode != 0:
         raise RuntimeError(f"ptarmigan at {working_directory} exited with {result.returncode}\n--- stderr ---\n{result.stderr}")
-        
+
+def dump_photons(temp_dir : Path, photon_file : Path):
+    from_path = temp_dir/PTARMIGAN_OUTPUT_FILENAME
+    to_path = photon_file
+    shutil.copy2(from_path, to_path)
+
+ 
 def ptarmigan_h5_to_xsuite(
     particles, 
     particle_range, 
@@ -282,11 +288,12 @@ def get_active_particle_id_range(particles):
 
     
 class LaserInteraction():
-    def __init__(self, name, ptarmigan_path: Path, laser_parameter: dict, seed: int):
+    def __init__(self, name, ptarmigan_path: Path, laser_parameter: dict, seed: int, photon_file: Path):
         self.ptarmigan_path = Path(ptarmigan_path).absolute()
         self.laser_parameter = LASER_PARAMETER_SCHEMA.validate(laser_parameter)
         self.seed = seed
         self.is_on = True
+        self.photon_file = photon_file
 
     def track(self, particles):
         if not self.is_on:
@@ -298,7 +305,7 @@ class LaserInteraction():
             particle_range = get_active_particle_id_range(particles)
 
             n_particles = particle_range[1] - particle_range[0]
-            if n_particles <= 1000:
+            if n_particles < 1000:
                 raise ValueError(
                     f"Number of particles too low: got {n_particles}, need more than 1000."
                 )
@@ -307,4 +314,7 @@ class LaserInteraction():
             prepare_ptarmigan_input(self.laser_parameter, particles, self.seed, temp_dir)
             run_ptarmigan(self.ptarmigan_path, temp_dir)
             ptarmigan_h5_to_xsuite(particles, particle_range, temp_dir)
+            if self.photon_file is not None:
+                dump_photons(temp_dir, self.photon_file)
+
         self.seed = self.seed + 1
