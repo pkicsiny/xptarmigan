@@ -8,7 +8,7 @@ To run, first install the required python packages by running
 
 `python -m pip install .`
 
-Note that as of time of writing, only Python 3.11 is supported.
+Requires Python 3.11 or newer.
 
 For using, install a `LaserInteraction` element in the beamline following
 
