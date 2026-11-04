@@ -1,0 +1,29 @@
+[project]
+name = "xptarmigan"
+version = "0.1.0"
+description = "XPtarmigan is an interface between Xsuite Ptarmigan (https://github.com/tgblackburn/ptarmigan) which simulates nonlinear inverse Compton scattering between e+/e- and laser gamma photons."
+authors = [
+    {name = "Peter Kicsiny", email = "pkicsiny@slac.stanford.edu"},
+    ]
+license = "MIT"
+requires-python = ">=3.11"
+
+
+dependencies = [
+"xsuite",
+"numpy",
+"pandas",
+"h5py",
+"pytest",
+"hypothesis",
+"schema",
+"generic-parser",
+]
+
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
