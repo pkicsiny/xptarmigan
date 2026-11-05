@@ -10,7 +10,7 @@ import xobjects as xo
 from xptarmigan import laser_interaction as xpt
 
 INPUT_DIR = Path(__file__).parent / "input"
-PTARMIGAN_EXECUTABLE = Path(__file__).parent.parent.parent / "ptarmigan_executable" / "ptarmigan_compiled.mac"
+PTARMIGAN_EXECUTABLE = Path(__file__).parent.parent.parent / "ptarmigan_executable" / "ptarmigan_compiled.gcc"
 XSUITE_COORDINATES = ['x', 'px', 'y', 'py', 'zeta', 'delta']
 
 EXAMPLE_LASER_PARAMETER = {
@@ -19,7 +19,7 @@ EXAMPLE_LASER_PARAMETER = {
          'wavelength_um': .8,            
 'fwhm_pulse_duration_fs': 48,   
           'polarization': "linear",             
-             'angle_deg': 180+28.1,
+             'angle_deg': 28.1,
       'ebeam_offset_x_m': 0,
       'ebeam_offset_y_m': 0,
       'ebeam_offset_z_m': 0,

@@ -288,12 +288,12 @@ def get_active_particle_id_range(particles):
 
     
 class LaserInteraction():
-    def __init__(self, name, ptarmigan_path: Path, laser_parameter: dict, seed: int, photon_file: Path):
+    def __init__(self, name, ptarmigan_path: Path, laser_parameter: dict, seed: int, photon_file: Path | None = None):
         self.ptarmigan_path = Path(ptarmigan_path).absolute()
         self.laser_parameter = LASER_PARAMETER_SCHEMA.validate(laser_parameter)
         self.seed = seed
         self.is_on = True
-        self.photon_file = photon_file
+        self.photon_file = Path(photon_file) if photon_file is not None else None
 
     def track(self, particles):
         if not self.is_on:
